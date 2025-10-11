@@ -1,0 +1,43 @@
+const { pool } = require("mssql");
+const { sql, getConnection } = require("../config/db"); //importação 
+
+const clientesModel = {
+    buscarTodos: async () => {
+        try {
+            const pool = await getConnection();
+
+            let query = "SELECT * FROM Clientes"; //consulta de clientes 
+
+            const result = await pool.request().query(query); // Executa a query SQL que seleciona todos os registros da tabela
+
+            return result.recordset; //retorna a lista de clientes 
+
+        } catch (error) {
+            console.error("Erro ao buscar Clientes", error);
+            throw error; //caso der erro ele recebera a informação 
+        }
+
+    },
+
+    inserirCliente: async (nomeCliente, cpfCliente) => {
+        try {
+            const pool = await getConnection();
+
+            let query = 'INSERT INTO Clientes (nomeCliente, cpfCliente) VALUES (@nomeCliente, @cpfCliente)';
+
+            await pool.request()
+                .input('nomeCliente', sql.VarChar(100), nomeCliente)
+                .input('cpfCliente', sql.VarChar(14), cpfCliente)
+                .query(query);
+
+        } catch (error) {
+            console.error('Erro ao inserir cliente:', error);
+            throw error;
+        }
+    }
+};
+
+
+module.exports = {
+    clientesModel
+};

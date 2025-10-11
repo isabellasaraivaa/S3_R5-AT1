@@ -18,7 +18,26 @@ const produtosModel = {        // criando objeto javascript
             throw error;   //caso der erro ele que recebera a informacao
         }
     }
-};
+}; 
+     inserirProduto: async (nomeProduto,precoProduto)=>{
+        try {
+
+            const pool = await getConnection();
+
+            let querySQL = 'INSERT INTO Produtos (nomeProduto, precoProduto) VALUES (@nomeProduto, @precoProduto)';
+
+            await pool.request()
+                .input('nomeProduto', sql.VarChar(100),
+                nomeProduto)
+                .input('precoProduto', sql.Decimal(10,2),
+                precoProduto)
+                .query(querySQL);
+            
+        } catch (error) {
+            console.error('Erro ao inserir produtos:', error);
+            throw error;
+        }
+     }
 
 // (async ()=>{
 //     const produtos = await produtosModel.buscarTodos();
