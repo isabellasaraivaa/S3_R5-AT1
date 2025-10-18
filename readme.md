@@ -41,9 +41,16 @@
     "message":"Erro ao buscar Cliente"
 }
 ```
-
+#### POST /clientes 
 -**Descrição**:Inserir clientes no Banco De Dados
 
+-**Body**:
+```
+{
+    "nomeCliente": "clienteExemplo",
+    "cpfCliente": 000.000.000-00
+}
+```
 -**Response**:
 ```
 {
@@ -54,13 +61,5 @@
 ```
 {
     "message":"Erro ao inserir Cliente"
-}
-```
-
--**Body**:
-```
-{
-    "nomeCliente": "clienteExemplo",
-    "cpfCliente": 000.000.000-00
 }
 ```
