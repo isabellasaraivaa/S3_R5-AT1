@@ -54,6 +54,29 @@ const produtosController ={
         }
     },
 
+    deletarProduto: async (req, res) => {
+        try {
+            const { idProduto } = req.params;
+            
+            //Validação do idProduto
+            if(idProduto.length != 36) {
+                return res.status(400).json({erro: 'id do produto é inválido!'});
+            }
+
+            const produto = await produtosModel.buscarUm(idProduto);
+
+            if (!produto || produto.length !==1) {
+                return res.status(404).json({erro: 'Produto não encontrado!'});
+            }
+            await produtosModel.deletarProduto(idProduto);
+
+            res.status(200).json({message: 'Produto deletado com sucesso!'});
+        
+        } catch (error) {
+            console.error('Erro ao deletar produto:', error);
+         res.status(500).json({erro: 'Erro interno no servidor ao deletar o Produto!'});
+        }
+    },
 
 
 //criar um novo produto post /produtos
