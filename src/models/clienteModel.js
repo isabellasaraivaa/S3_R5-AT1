@@ -19,15 +19,17 @@ const clientesModel = {
 
     },
 
-    inserirCliente: async (nomeCliente, cpfCliente) => {
+    inserirCliente: async (nomeCliente, cpfCliente, emailCliente, senhaCliente) => {
         try {
             const pool = await getConnection();
 
-            let query = 'INSERT INTO Clientes (nomeCliente, cpfCliente) VALUES (@nomeCliente, @cpfCliente)';
+            let query = 'INSERT INTO Clientes (nomeCliente, cpfCliente, emailCliente, senhaCliente) VALUES (@nomeCliente, @cpfCliente, @emailCliente, @senhaCliente)';
 
             await pool.request()
                 .input('nomeCliente', sql.VarChar(100), nomeCliente)
                 .input('cpfCliente', sql.VarChar(14), cpfCliente)
+                .input('emailCliente', sql.VarChar(150), emailCliente)
+                .input('senhaCliente', sql.VarChar(255), senhaCliente)
                 .query(query);
 
         } catch (error) {

@@ -1,4 +1,5 @@
 const { clientesModel } = require("../models/clienteModel");
+const bcrypt = require('bcrypt');
 
 //Busca de todos os clientes 
 const clientesController ={
@@ -17,13 +18,18 @@ const clientesController ={
     //Criação de um novo cliente com verificação de cpf 
     criarClientes: async (req, res) =>{
         try {
-            const { nomeCliente, cpfCliente} = req.body;
+            const { nomeCliente, cpfCliente, emailCliente, senhaCliente} = req.body;
             
-            if (!nomeCliente || !cpfCliente) {
-                return res.status(400).json({ error: 'Nome e CPF são obrigatórios' });
+            if (!nomeCliente || !cpfCliente || !emailCliente || !senhaCliente) {
+                return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
             }
           
-          await clientesModel.inserirCliente(nomeCliente, cpfCliente)
+            //Criptografar a senha do cliente
+            const saltRounds =10;
+            const senhaCriptografada = await bcrypt.hash(senhaCliente, saltRounds);
+
+            
+          await clientesModel.inserirCliente(nomeCliente, cpfCliente, emailCliente, senhaCriptografada);
           res.status(201).json({
             message: 'Cliente criado com sucesso'
           });
