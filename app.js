@@ -1,9 +1,10 @@
-const express = require('express')
+const express = require('express');
+require('dotenv').config();
 const app = express()
 const { produtoRoutes } = require("./src/routes/produtosRoutes")
 const { clientesRouter } = require('./src/routes/clientesRoutes')
 
-const PORT = 8081
+const PORT = process.env.PORT
 
 app.use(express.json())
 

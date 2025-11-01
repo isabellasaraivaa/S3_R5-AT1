@@ -19,6 +19,47 @@ const clientesModel = {
 
     },
 
+    buscarPorEmail: async (emailCliente) => {
+        try {
+            const pool = await getConnection();
+
+            let query = "SELECT * FROM Clientes WHERE emailCliente = @emailCliente"; //consulta de clientes 
+
+            const result = await pool
+            .request()
+            .input('emailCliente', sql.VarChar(200), emailCliente)
+            .query(querySQL); // Executa a query SQL que seleciona todos os registros da tabela
+
+            return result.recordset; //retorna a lista de clientes 
+
+        } catch (error) {
+            console.error("Erro ao buscar Clientes", error);
+            throw error; //caso der erro ele recebera a informação 
+        }
+
+    },
+    buscarCpf: async (cpfCliente) => {
+        try {
+            const pool = await getConnection();
+
+            let query = "SELECT * FROM Clientes  WHERE cpfCliente = @cpfCliente"; //consulta de clientes
+
+            const result = await pool
+            .request()
+            .input('cpfCliente', sql.VarChar(14), cpfCliente)
+            .query(querySQL); // Executa a query SQL que seleciona todos os registros da tabela
+
+            return result.recordset; //retorna a lista de clientes 
+
+        } catch (error) {
+            console.error("Erro ao buscar Clientes", error);
+            throw error; //caso der erro ele recebera a informação 
+        }
+
+    },
+
+
+
     inserirCliente: async (nomeCliente, cpfCliente, emailCliente, senhaCliente) => {
         try {
             const pool = await getConnection();
