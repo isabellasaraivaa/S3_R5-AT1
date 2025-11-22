@@ -2,35 +2,35 @@ const { clientesModel } = require("../models/clienteModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const authController = {
-    clienteLogin: async (req, res) => {
+const authController = { // controller de autenticação
+    clienteLogin: async (req, res) => { // login do cliente 
         try {
-            const { emailCliente, senhaCliente } = req.body;
+            const { emailCliente, senhaCliente } = req.body; // dados do cliente
 
-            if (emailCliente == undefined || senhaCliente == undefined) {
+            if (emailCliente == undefined || senhaCliente == undefined) { // validação dos dados 
                 return res.status(400).json({ error: "Email e senha são obrigatórios"});
             }
             
             const result = await clientesModel.buscarPorEmail(emailCliente);
 
-            if (result.length ===0) {
+            if (result.length ===0) { // validação do email
                 return res.status(401).json({ error: "Email ou senha não encontrados"});
             }
 
-            const cliente = result[0];
+            const cliente = result[0]; // pega o cliente 
 
-            const senhaValida = await bcrypt.compare(senhaCliente, cliente.senhaCliente);
+            const senhaValida = await bcrypt.compare(senhaCliente, cliente.senhaCliente); // validação de senha
 
-            if ( !senhaValida ) {
-                return res.status(401).json({ error: "Credenciais inválidas"});
+            if ( !senhaValida ) { 
+                return res.status(401).json({ error: "Credenciais inválidas"}); //senha invalida
             }
-            const payLoad = {
+            const payLoad = { // criação di token 
                 idCliente: cliente.idCliente,
                 nomeCliente: cliente.nomeCliente,
                 tipoUsuario:  'cliente'
             };
             
-            const token = jwt.sign(payLoad, process.env.JWT_SECRET, {
+            const token = jwt.sign(payLoad, process.env.JWT_SECRET, { // assinatura do token 
                 expiresIn: process.env.JWT_SECRET_EXPIRES_IN
             });
 

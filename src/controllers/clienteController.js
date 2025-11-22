@@ -5,31 +5,31 @@ const bcrypt = require('bcrypt');
 const clientesController ={
     listarClientes: async (req, res)=>{
         try {
-            const clientes = await clientesModel.buscarTodos();
+            const clientes = await clientesModel.buscarTodos(); // busca todos os clientes
 
-            res.status(200).json(clientes);
+            res.status(200).json(clientes); //retorna a lista de clientes
 
-        } catch (error) {
+        } catch (error) { //tratamento de erro
             console.error('Erro ao listar clientes:', error);
-            res.status(500).json({ error: 'Erro ao listar clietes'});
+            res.status(500).json({ error: 'Erro ao listar clietes'}); 
         }
     },
 
     //Criação de um novo cliente com verificação de cpf 
     criarClientes: async (req, res) =>{
         try {
-            const { nomeCliente, cpfCliente, emailCliente, senhaCliente} = req.body;
+            const { nomeCliente, cpfCliente, emailCliente, senhaCliente} = req.body; //dados do cliente
             
-            if (!nomeCliente || !cpfCliente || !emailCliente || !senhaCliente) {
+            if (!nomeCliente || !cpfCliente || !emailCliente || !senhaCliente) { //validação dos dados
                 return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
             }
           
             //Criptografar a senha do cliente
-            const saltRounds =10;
-            const senhaCriptografada = await bcrypt.hash(senhaCliente, saltRounds);
+            const saltRounds =10; // número de rounds de salt
+            const senhaCriptografada = await bcrypt.hash(senhaCliente, saltRounds); //criptografia da senha
 
             
-          await clientesModel.inserirCliente(nomeCliente, cpfCliente, emailCliente, senhaCriptografada);
+          await clientesModel.inserirCliente(nomeCliente, cpfCliente, emailCliente, senhaCriptografada); //insere o cliente no banco de dados
           res.status(201).json({
             message: 'Cliente criado com sucesso'
           });

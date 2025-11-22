@@ -3,9 +3,9 @@ const { sql, getConnection } = require("../config/db");
 
 const produtosModel = {        // criando objeto javascript
     buscarTodos: async () => {   //buscar todos os atributos
-        try {
+        try { //tratamento de erro
 
-            const pool = await getConnection();
+            const pool = await getConnection(); //conexão com o banco de dados 
 
             let querySQL = "SELECT * FROM Produtos";   //query quer dizer consulta
 
@@ -18,14 +18,14 @@ const produtosModel = {        // criando objeto javascript
             throw error;   //caso der erro ele que recebera a informacao
         }
     },
-    buscarUm: async (idProduto) => {
+    buscarUm: async (idProduto) => { // buscar um produto pelo id
         try {
-            const pool = await getConnection();
+            const pool = await getConnection(); //conexão com o banco de dados
 
-            const querySQL = 'SELECT * FROM Produtos WHERE idProduto = @idProduto';
+            const querySQL = 'SELECT * FROM Produtos WHERE idProduto = @idProduto'; // consulta SQL para buscar o produto pelo id
 
             const result = await pool.request()
-                .input('idProduto', sql.UniqueIdentifier, idProduto)
+                .input('idProduto', sql.UniqueIdentifier, idProduto) //evita SQL injection
                 .query(querySQL);
             return result.recordset;
 
@@ -36,7 +36,7 @@ const produtosModel = {        // criando objeto javascript
 
     },
 
-    atualizarProduto: async (idProduto, nomeProduto, precoProduto) => {
+    atualizarProduto: async (idProduto, nomeProduto, precoProduto) => { // atualizar produto
         try {
             const pool = await getConnection();
 
@@ -60,16 +60,16 @@ const produtosModel = {        // criando objeto javascript
         }
     },
 
-    deletarProduto: async (idProduto) => {
+    deletarProduto: async (idProduto) => { // deletar produto
         try {
-            const pool = await getConnection();
+            const pool = await getConnection(); // conexão com o banco 
 
-            const querySQL = `
-              DELETE FROM Produtos
-              WHERE idProduto = @idProduto
+            const querySQL = ` // query de deletar
+              DELETE FROM Produtos 
+              WHERE idProduto = @idProduto // evite sql injection
               `
 
-            await pool.request()
+            await pool.request() //executa a query
                 .input("idProduto", sql.UniqueIdentifier, idProduto)
                 .query(querySQL);
 
@@ -81,19 +81,19 @@ const produtosModel = {        // criando objeto javascript
     },
 
 
-    inserirProduto: async (nomeProduto, precoProduto) => {
+    inserirProduto: async (nomeProduto, precoProduto) => { // inserir produto
         try {
 
-            const pool = await getConnection();
+            const pool = await getConnection(); // conexão com o banco 
 
-            let querySQL = 'INSERT INTO Produtos (nomeProduto, precoProduto) VALUES (@nomeProduto, @precoProduto)';
+            let querySQL = 'INSERT INTO Produtos (nomeProduto, precoProduto) VALUES (@nomeProduto, @precoProduto)'; // query de inserção
 
-            await pool.request()
+            await pool.request() // executa a query
                 .input('nomeProduto', sql.VarChar(100),
-                    nomeProduto)
+                    nomeProduto) 
                 .input('precoProduto', sql.Decimal(10, 2),
-                    precoProduto)
-                .query(querySQL);
+                    precoProduto) // evite SQL injection
+                .query(querySQL); // executa a query
 
         } catch (error) {
             console.error('Erro ao inserir produtos:', error);

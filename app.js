@@ -1,10 +1,10 @@
-const express = require('express');
-require('dotenv').config();
-const app = express()
-const { produtoRoutes } = require("./src/routes/produtosRoutes")
+const express = require('express'); // importação do express
+require('dotenv').config(); // importação do dotenv para variaveis de ambiente 
+const app = express() // criando a aplicação express
+const { produtoRoutes } = require("./src/routes/produtosRoutes") 
 const { clientesRouter } = require('./src/routes/clientesRoutes')
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT // definindo a porta da aplicação
 
 app.use(express.json())
 

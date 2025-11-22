@@ -38,9 +38,9 @@ const clientesModel = {
         }
 
     },
-    buscarCpf: async (cpfCliente) => {
+    buscarCpf: async (cpfCliente) => { // buscar cliente por cpf
         try {
-            const pool = await getConnection();
+            const pool = await getConnection(); 
 
             let query = "SELECT * FROM Clientes  WHERE cpfCliente = @cpfCliente"; //consulta de clientes
 
@@ -60,18 +60,18 @@ const clientesModel = {
 
 
 
-    inserirCliente: async (nomeCliente, cpfCliente, emailCliente, senhaCliente) => {
+    inserirCliente: async (nomeCliente, cpfCliente, emailCliente, senhaCliente) => { // inserir cliente
         try {
-            const pool = await getConnection();
+            const pool = await getConnection(); // conexão com o banco
 
-            let query = 'INSERT INTO Clientes (nomeCliente, cpfCliente, emailCliente, senhaCliente) VALUES (@nomeCliente, @cpfCliente, @emailCliente, @senhaCliente)';
+            let query = 'INSERT INTO Clientes (nomeCliente, cpfCliente, emailCliente, senhaCliente) VALUES (@nomeCliente, @cpfCliente, @emailCliente, @senhaCliente)'; // query de inserção
 
-            await pool.request()
+            await pool.request() // executa a query
                 .input('nomeCliente', sql.VarChar(100), nomeCliente)
                 .input('cpfCliente', sql.VarChar(14), cpfCliente)
                 .input('emailCliente', sql.VarChar(150), emailCliente)
                 .input('senhaCliente', sql.VarChar(255), senhaCliente)
-                .query(query);
+                .query(query); 
 
         } catch (error) {
             console.error('Erro ao inserir cliente:', error);
